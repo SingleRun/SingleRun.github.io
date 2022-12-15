@@ -64,10 +64,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-存储器扩展" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Servlet" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2022/12/15/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/" class="article-date">
-  <time datetime="2022-12-15T02:25:27.487Z" itemprop="datePublished">2022-12-15</time>
+    <a href="/2022/12/15/Servlet/" class="article-date">
+  <time datetime="2022-12-15T02:32:04.682Z" itemprop="datePublished">2022-12-15</time>
 </a>
     
   </div>
@@ -76,53 +76,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>[TOC]</p>
-<h2 id="存储元和存储单元"><a href="#存储元和存储单元" class="headerlink" title="存储元和存储单元"></a>存储元和存储单元</h2><p>在讲位扩展和字扩展之前，我们先来说一下存储元和存储单元。</p>
-<h3 id="存储元"><a href="#存储元" class="headerlink" title="存储元"></a>存储元</h3><p><img src="image/image-20220502161450795.png" alt="image-20220502161450795"></p>
-<p>百度百科里介绍到，任何具有两个稳定状态的物理器件都可以用来做存储元。也就是说，既然存储元只有两种状态，我们就可以把它相当于一位二进制数（只有0或1两种状态）。如下图，我们用一个小箱子来表示一个存储单元，它可以输出0或1。</p>
-<p><img src="image/image-20220502163628268.png" alt="image-20220502163628268"></p>
-<h3 id="存储单元"><a href="#存储单元" class="headerlink" title="存储单元"></a>存储单元</h3><p>我们买来了四个存储元，将它们输出到一个4位的寄存器上。我们称这样一组输出到同一寄存器上（也就是连接到同一寄存器上）的存储元为一个==存储单元==。而一个存储单元有多少个存储元，我们就说==字长==是多少位。而存储单元输出的一个数据（本例中为一个4位的数据1011），我们称之为==存储字==。而将存储元连接到寄存器MDR上的蓝线我们称之为==数据线==，一个存储单元有多少个存储元就有多少根数据线。</p>
-<p><img src="image/image-20220502170228183.png" alt="image-20220502170228183"></p>
-<p>位扩展和字扩展里面的位和字就是这么一回事，要理解好了位和字才能学好后面的位扩展和位扩展。</p>
-<h3 id="接线"><a href="#接线" class="headerlink" title="接线"></a>接线</h3><p>为了存储4个4位的数据，我们买来了4个4位存储单元，或者说买来了16个存储元，然后把它们都输出到MDR上，如下图。</p>
-<p><img src="image/image-20220502170244930.png" alt="image-20220502170244930"></p>
-<p>然后我们会发现一个问题，就是MDR寄存器它不知道要听一个存储单元（或者说哪一组存储元）的，第一个存储单元想要输出1011，第二个存储单元想要输出1010，那这种情况要怎么办？答案其实也很简单，只能存4位数据（实际上MDR可以存8位数据，这里为了方便我就用4位来举例）的MDR不可能同时接收多个4位数据。所以我们只能选择接收其中一个存储单元的数据。如下图，我们增加了红色的线来选择要将哪个存储单元的数据输出到MDR上，只有当红色线提供的数据为1时，对应的存储单元数据才会被输出，所以这4根红色线中只能同时有一根线为1。图中只有第一根红线为1，所以只有第一个存储单元的数据会被输出到MDR上。</p>
-<p>然后我们又买来了一个译码器，用来把1或0送到红色线上。输入译码器的紫色线我们称之为==地址线==。如果紫色线为00，就是只有从上往下数第4根红色线为1；如果紫色线为01，第3根红色线为1；如果紫色线是10，则只有第2根红色线为1；如果紫色线是11，则只有第1根红色线为1。我们可以知道，一个地址（图中2根地址线组成的数字00,01那些）就对应一根红色线为1。一个地址是每一位都只能为0或1，所以有2根地址线就有2×2共4种状态，有3根地址线就有2×2×2共8种状态。也就是说，有多少根地址线，输出的地址就有2的多少次方种状态，就可以对应多少个存储单元。</p>
-<p>总容量=存储单元个数（2^地址线根数） * 存储字长（数据线根数）</p>
-<p>如下面要讲的1K×8bit的存储器，就是2的10次方个存储单元，10根地址线，存储字长为8bit，数据线有8根。</p>
-<p><img src="image/image-20220502171857968.png" alt="image-20220502171857968"></p>
-<h2 id="位扩展和字扩展"><a href="#位扩展和字扩展" class="headerlink" title="位扩展和字扩展"></a>位扩展和字扩展</h2><p>进入本文正题，位扩展和字扩展。</p>
-<h3 id="位扩展（增加存储字长）"><a href="#位扩展（增加存储字长）" class="headerlink" title="位扩展（增加存储字长）"></a>位扩展（增加存储字长）</h3><p>问题：用（2）片 1K×4位 存储芯片组成 1K×8位的存储器（10根地址线，8根数据线）</p>
-<p>由于增加的是存储字长，也是就是说增加一个字的位数。我们可以这样设计：拿一片1K×4位 存储芯片作为高4位，再拿一片1K×4位 存储芯片作为低4位，这样我们的存储字长就从4位增加到了8位。</p>
-<p>D7~D0为8根数据线，对应8位数据。我们先将两个1K×4位的存储芯片分别接到数据线的高四位和低四位。</p>
-<p><img src="image/image-20220502175558181.png" alt="image-20220502175558181"></p>
-<p>然后我们将两个1K×4位的存储芯片接到同样的地址线上面，表示他们同时工作。</p>
-<p><img src="image/image-20220502180336275-16516428803801.png" alt="image-20220502180336275"></p>
-<p>然后我们再将两个1K×4位的存储芯片接到同样的片选线CS和读写控制线WE上，同样表示他们同时进行工作。</p>
-<p><img src="image/image-20220502181545575.png" alt="image-20220502181545575"></p>
-<h3 id="字扩展-增加存储字的数量"><a href="#字扩展-增加存储字的数量" class="headerlink" title="字扩展(增加存储字的数量)"></a>字扩展(增加存储字的数量)</h3><p>问题：用（2）片 1K×8位存储芯片组成2K×8位的存储器。（11根地址线，8根数据线）</p>
-<p>由于增加的是存储字的数量，也是就是说增加存储单元的数量。我们可以这样设计：1片1K×8位存储芯片有2^10个存储单元，一个2K×8位的存储器的2^11个存储单元，所以我们直接拿两片1K×8位存储芯片就可以达到目的，功德圆满。</p>
-<p> 我们先把两片1K×8位存储芯片接到同样的地址线上，但由于这两片芯片不能同时工作（一个地址怎么能对应多户人家（数据）呢），我们得再增加一位地址，来表示是使用了哪一片1K×8位的存储芯片，这也是片选线的意义所在（如下下图所示）。</p>
-<p><img src="image/image-20220502182512174.png" alt="image-20220502182512174"></p>
-<p>如下图，我们增加了一位地址A10，并将两片1K×8位存储芯片的片选线接到上面，然后增加了一个取反器。这样一来第一个1K×8位存储芯片的地址为0xxxxxxxxxx，而第二个1K×8位存储芯片的地址为1xxxxxxxxxx。</p>
-<p><img src="image/image-20220502183403715.png" alt="image-20220502183403715"></p>
-<p>然后将数据线和读写控制线都给接上</p>
-<p><img src="image/image-20220502184054987.png" alt="image-20220502184054987"></p>
-<h3 id="字位同时扩展"><a href="#字位同时扩展" class="headerlink" title="字位同时扩展"></a>字位同时扩展</h3><p>问题：用（8）片 1K×4位的存储芯片组成4K×8位的存储器。（12根地址线，8根数据线）</p>
-<p>我们先进行位扩展，也就是用2片1K×4位的存储芯片将位数扩展到8位。然后进行字扩展，我们可以把前面2片1K×4位的存储芯片看为1组1K×8位的存储芯片，然后我们需要4组1K×8位的存储芯片才能扩展为4K×8位的存储器，也就是4×2片1K×4位的存储芯片。</p>
-<p>我们先将每两片1K×4位的存储芯片作为1组接到数据线上，一共4组。</p>
-<p><img src="image/image-20220502185536432.png" alt="image-20220502185536432"></p>
-<p>再将这四组存储芯片接到同样的地址线上，但由于这四组存储芯片不能同时工作，我们需要增加地址，来表示选择哪一组存储芯片（下下图）。</p>
-<p><img src="image/image-20220502190534482.png" alt="image-20220502190534482"></p>
-<p>我们为这四组存储芯片都加了片选线（如下图），同一组芯片是同时工作的，所以他们需要接收到同样的片选信号。</p>
-<p><img src="image/image-20220502191047467.png" alt="image-20220502191047467"></p>
-<p>再将读写控制线接上，功德圆满。</p>
-<p><img src="image/image-20220502191404221.png" alt="image-20220502191404221"></p>
+        <h1 id="Servlet-学习笔记"><a href="#Servlet-学习笔记" class="headerlink" title="Servlet 学习笔记"></a>Servlet 学习笔记</h1><p>[TOC]</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>servlet 是 java 的一个小程序，用于处理请求和转发信息。</p>
+<h2 id="手动实现-servlet-程序"><a href="#手动实现-servlet-程序" class="headerlink" title="手动实现 servlet 程序"></a>手动实现 servlet 程序</h2><ol>
+<li><p>编写一个类去实现 servlet 接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloServlet</span> <span class="keyword">implements</span> <span class="title class_">Servlet</span></span><br></pre></td></tr></table></figure></li>
+<li><p>实现 service 方法，处理请求，并响应数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * service方法用于处理请求和响应，也就是说只要访问了hello，他就会自动调用service方法</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> servletRequest</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> servletResponse</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@throws</span> ServletException</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException</span><br><span class="line">   &#123;</span><br><span class="line">       System.out.println(<span class="string">&quot;Hello,这里是service!&quot;</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>到 web.xml中去配置 servlet 程序的访问地址</p>
+<p>工程路径：右上角 运行/调试配置→Tomcat服务器→部署 往下拉→应用程序上下文</p>
+<p>资源路径：/hello</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- servlet标签给Tomcat配置Servlet程序 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--servlet-name标签 Servlet程序起一个别名（一般是类名） --&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--servlet-class是Servlet程序的全类名--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.yutou.servlet.HelloServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">   </span><br><span class="line">   <span class="comment">&lt;!--servlet-mapping标签给servlet程序配置访问地址--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--servlet-name标签的作用是告诉服务器，我当前配置的地址给哪个Servlet程序使用--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">           url-pattern标签配置访问地址                                     &lt;br/&gt;</span></span><br><span class="line"><span class="comment">              / 斜杠在服务器解析的时候，表示地址为：http://ip:port/工程路径          &lt;br/&gt;</span></span><br><span class="line"><span class="comment">              /hello 表示地址为：http://ip:port/工程路径/hello              &lt;br/&gt;</span></span><br><span class="line"><span class="comment">       --&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/hello<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="Servlet-生命周期"><a href="#Servlet-生命周期" class="headerlink" title="Servlet 生命周期"></a>Servlet 生命周期</h2><p>第一次访问 Servlet 的时候会创建该 Servlet实现类</p>
+<ol>
+<li>执行 Servlet 构造器方法（创建 Servlet 实现类会调用）</li>
+<li>执行 init 初始化方法（创建完 Servlet 实现类会调用）</li>
+<li>执行 service 方法 （每次访问都会调用）</li>
+<li>执行 destroy 销毁方法（在 web 工程停止的时候调用）</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/12/15/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/" data-id="clbogluue00001k7g971x9pmv" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/12/15/Servlet/" data-id="clbogugk40001ss7g421590w0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -132,9 +109,9 @@
 
 
   
-    <article id="post-heiheihei" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-MySQL必知必会" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2022/12/15/heiheihei/" class="article-date">
+    <a href="/2022/12/15/MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" class="article-date">
   <time datetime="2022-12-15T02:24:33.049Z" itemprop="datePublished">2022-12-15</time>
 </a>
     
@@ -434,7 +411,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/12/15/heiheihei/" data-id="clbogkvrp0000ms7g50tifbfp" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/12/15/MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" data-id="clbogugjz0000ss7g2eatfkz4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -524,11 +501,11 @@
       <ul>
         
           <li>
-            <a href="/2022/12/15/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/">(no title)</a>
+            <a href="/2022/12/15/Servlet/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2022/12/15/heiheihei/">(no title)</a>
+            <a href="/2022/12/15/MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/">(no title)</a>
           </li>
         
           <li>
