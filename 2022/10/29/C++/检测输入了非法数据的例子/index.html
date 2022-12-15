@@ -16,38 +16,22 @@
   <meta name="author" content="C4n">
   <meta name="keywords" content="">
   
-    <meta name="description" content="review 存储器扩展">
+    <meta name="description" content="以该例子理解cin函数对输入非法数据的处理，以及如何去让cin能重新工作。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="存储器扩展">
-<meta property="og:url" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/index.html">
+<meta property="og:title" content="检测输入了非法数据的例子">
+<meta property="og:url" content="https://singlerun.github.io/2022/10/29/C++/%E6%A3%80%E6%B5%8B%E8%BE%93%E5%85%A5%E4%BA%86%E9%9D%9E%E6%B3%95%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BE%8B%E5%AD%90/index.html">
 <meta property="og:site_name" content="C4n&#39;s Blog">
-<meta property="og:description" content="review 存储器扩展">
+<meta property="og:description" content="以该例子理解cin函数对输入非法数据的处理，以及如何去让cin能重新工作。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502161450795.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502163628268.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502170228183.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502170244930.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502171857968.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502175558181.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502180336275-16516428803801.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502181545575.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502182512174.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502183403715.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502184054987.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502185536432.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502190534482.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502191047467.png">
-<meta property="og:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502191404221.png">
-<meta property="article:published_time" content="2022-05-02T09:00:00.000Z">
-<meta property="article:modified_time" content="2022-12-15T06:56:07.399Z">
+<meta property="article:published_time" content="2022-10-29T06:17:13.000Z">
+<meta property="article:modified_time" content="2022-12-15T12:03:42.536Z">
 <meta property="article:author" content="C4n">
-<meta property="article:tag" content="计算机组成原理">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://singlerun.github.io/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502161450795.png">
   
   
   
-  <title>存储器扩展 - C4n&#39;s Blog</title>
+  <title>检测输入了非法数据的例子 - C4n&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -213,7 +197,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="存储器扩展"></span>
+            <span id="subtitle" data-typed-text="检测输入了非法数据的例子"></span>
           
         </div>
 
@@ -224,8 +208,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-05-02 17:00" pubdate>
-          May 2, 2022 pm
+        <time datetime="2022-10-29 14:17" pubdate>
+          October 29, 2022 pm
         </time>
       </span>
     
@@ -236,7 +220,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.2k words
+          587 words
         
       </span>
     
@@ -247,7 +231,7 @@
         
         
         
-          19 mins
+          5 mins
         
       </span>
     
@@ -285,52 +269,13 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">存储器扩展</h1>
+            <h1 style="display: none">检测输入了非法数据的例子</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="存储元和存储单元"><a href="#存储元和存储单元" class="headerlink" title="存储元和存储单元"></a>存储元和存储单元</h2><p>在讲位扩展和字扩展之前，我们先来说一下存储元和存储单元。</p>
-<h3 id="存储元"><a href="#存储元" class="headerlink" title="存储元"></a>存储元</h3><p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502161450795.png" srcset="/img/loading.gif" lazyload alt="image-20220502161450795"></p>
-<p>百度百科里介绍到，任何具有两个稳定状态的物理器件都可以用来做存储元。也就是说，既然存储元只有两种状态，我们就可以把它相当于一位二进制数（只有0或1两种状态）。如下图，我们用一个小箱子来表示一个存储单元，它可以输出0或1。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502163628268.png" srcset="/img/loading.gif" lazyload alt="image-20220502163628268"></p>
-<h3 id="存储单元"><a href="#存储单元" class="headerlink" title="存储单元"></a>存储单元</h3><p>我们买来了四个存储元，将它们输出到一个4位的寄存器上。我们称这样一组输出到同一寄存器上（也就是连接到同一寄存器上）的存储元为一个==存储单元==。而一个存储单元有多少个存储元，我们就说==字长==是多少位。而存储单元输出的一个数据（本例中为一个4位的数据1011），我们称之为==存储字==。而将存储元连接到寄存器MDR上的蓝线我们称之为==数据线==，一个存储单元有多少个存储元就有多少根数据线。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502170228183.png" srcset="/img/loading.gif" lazyload alt="image-20220502170228183"></p>
-<p>位扩展和字扩展里面的位和字就是这么一回事，要理解好了位和字才能学好后面的位扩展和位扩展。</p>
-<h3 id="接线"><a href="#接线" class="headerlink" title="接线"></a>接线</h3><p>为了存储4个4位的数据，我们买来了4个4位存储单元，或者说买来了16个存储元，然后把它们都输出到MDR上，如下图。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502170244930.png" srcset="/img/loading.gif" lazyload alt="image-20220502170244930"></p>
-<p>然后我们会发现一个问题，就是MDR寄存器它不知道要听一个存储单元（或者说哪一组存储元）的，第一个存储单元想要输出1011，第二个存储单元想要输出1010，那这种情况要怎么办？答案其实也很简单，只能存4位数据（实际上MDR可以存8位数据，这里为了方便我就用4位来举例）的MDR不可能同时接收多个4位数据。所以我们只能选择接收其中一个存储单元的数据。如下图，我们增加了红色的线来选择要将哪个存储单元的数据输出到MDR上，只有当红色线提供的数据为1时，对应的存储单元数据才会被输出，所以这4根红色线中只能同时有一根线为1。图中只有第一根红线为1，所以只有第一个存储单元的数据会被输出到MDR上。</p>
-<p>然后我们又买来了一个译码器，用来把1或0送到红色线上。输入译码器的紫色线我们称之为==地址线==。如果紫色线为00，就是只有从上往下数第4根红色线为1；如果紫色线为01，第3根红色线为1；如果紫色线是10，则只有第2根红色线为1；如果紫色线是11，则只有第1根红色线为1。我们可以知道，一个地址（图中2根地址线组成的数字00,01那些）就对应一根红色线为1。一个地址是每一位都只能为0或1，所以有2根地址线就有2×2共4种状态，有3根地址线就有2×2×2共8种状态。也就是说，有多少根地址线，输出的地址就有2的多少次方种状态，就可以对应多少个存储单元。</p>
-<p>总容量=存储单元个数（2^地址线根数） * 存储字长（数据线根数）</p>
-<p>如下面要讲的1K×8bit的存储器，就是2的10次方个存储单元，10根地址线，存储字长为8bit，数据线有8根。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502171857968.png" srcset="/img/loading.gif" lazyload alt="image-20220502171857968"></p>
-<h2 id="位扩展和字扩展"><a href="#位扩展和字扩展" class="headerlink" title="位扩展和字扩展"></a>位扩展和字扩展</h2><p>进入本文正题，位扩展和字扩展。</p>
-<h3 id="位扩展（增加存储字长）"><a href="#位扩展（增加存储字长）" class="headerlink" title="位扩展（增加存储字长）"></a>位扩展（增加存储字长）</h3><p>问题：用（2）片 1K×4位 存储芯片组成 1K×8位的存储器（10根地址线，8根数据线）</p>
-<p>由于增加的是存储字长，也是就是说增加一个字的位数。我们可以这样设计：拿一片1K×4位 存储芯片作为高4位，再拿一片1K×4位 存储芯片作为低4位，这样我们的存储字长就从4位增加到了8位。</p>
-<p>D7~D0为8根数据线，对应8位数据。我们先将两个1K×4位的存储芯片分别接到数据线的高四位和低四位。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502175558181.png" srcset="/img/loading.gif" lazyload alt="image-20220502175558181"></p>
-<p>然后我们将两个1K×4位的存储芯片接到同样的地址线上面，表示他们同时工作。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502180336275-16516428803801.png" srcset="/img/loading.gif" lazyload alt="image-20220502180336275"></p>
-<p>然后我们再将两个1K×4位的存储芯片接到同样的片选线CS和读写控制线WE上，同样表示他们同时进行工作。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502181545575.png" srcset="/img/loading.gif" lazyload alt="image-20220502181545575"></p>
-<h3 id="字扩展-增加存储字的数量"><a href="#字扩展-增加存储字的数量" class="headerlink" title="字扩展(增加存储字的数量)"></a>字扩展(增加存储字的数量)</h3><p>问题：用（2）片 1K×8位存储芯片组成2K×8位的存储器。（11根地址线，8根数据线）</p>
-<p>由于增加的是存储字的数量，也是就是说增加存储单元的数量。我们可以这样设计：1片1K×8位存储芯片有2^10个存储单元，一个2K×8位的存储器的2^11个存储单元，所以我们直接拿两片1K×8位存储芯片就可以达到目的，功德圆满。</p>
-<p> 我们先把两片1K×8位存储芯片接到同样的地址线上，但由于这两片芯片不能同时工作（一个地址怎么能对应多户人家（数据）呢），我们得再增加一位地址，来表示是使用了哪一片1K×8位的存储芯片，这也是片选线的意义所在（如下下图所示）。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502182512174.png" srcset="/img/loading.gif" lazyload alt="image-20220502182512174"></p>
-<p>如下图，我们增加了一位地址A10，并将两片1K×8位存储芯片的片选线接到上面，然后增加了一个取反器。这样一来第一个1K×8位存储芯片的地址为0xxxxxxxxxx，而第二个1K×8位存储芯片的地址为1xxxxxxxxxx。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502183403715.png" srcset="/img/loading.gif" lazyload alt="image-20220502183403715"></p>
-<p>然后将数据线和读写控制线都给接上</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502184054987.png" srcset="/img/loading.gif" lazyload alt="image-20220502184054987"></p>
-<h3 id="字位同时扩展"><a href="#字位同时扩展" class="headerlink" title="字位同时扩展"></a>字位同时扩展</h3><p>问题：用（8）片 1K×4位的存储芯片组成4K×8位的存储器。（12根地址线，8根数据线）</p>
-<p>我们先进行位扩展，也就是用2片1K×4位的存储芯片将位数扩展到8位。然后进行字扩展，我们可以把前面2片1K×4位的存储芯片看为1组1K×8位的存储芯片，然后我们需要4组1K×8位的存储芯片才能扩展为4K×8位的存储器，也就是4×2片1K×4位的存储芯片。</p>
-<p>我们先将每两片1K×4位的存储芯片作为1组接到数据线上，一共4组。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502185536432.png" srcset="/img/loading.gif" lazyload alt="image-20220502185536432"></p>
-<p>再将这四组存储芯片接到同样的地址线上，但由于这四组存储芯片不能同时工作，我们需要增加地址，来表示选择哪一组存储芯片（下下图）。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502190534482.png" srcset="/img/loading.gif" lazyload alt="image-20220502190534482"></p>
-<p>我们为这四组存储芯片都加了片选线（如下图），同一组芯片是同时工作的，所以他们需要接收到同样的片选信号。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502191047467.png" srcset="/img/loading.gif" lazyload alt="image-20220502191047467"></p>
-<p>再将读写控制线接上，功德圆满。</p>
-<p><img src="/2022/05/02/%E8%AE%A1%E7%BB%84%E7%AC%94%E8%AE%B0/%E5%AD%98%E5%82%A8%E5%99%A8%E6%89%A9%E5%B1%95/image-20220502191404221.png" srcset="/img/loading.gif" lazyload alt="image-20220502191404221"></p>
+                <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std; <br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fill_array</span><span class="hljs-params">(<span class="hljs-type">double</span> ar[],<span class="hljs-type">int</span> limit)</span></span>;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-type">double</span> array[<span class="hljs-number">25</span>];<br>	cout&lt;&lt;<span class="hljs-built_in">fill_array</span>(array,<span class="hljs-number">25</span>);<br>&#125; <br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fill_array</span><span class="hljs-params">(<span class="hljs-type">double</span> ar[],<span class="hljs-type">int</span> limit)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-type">double</span> temp;<br>	<span class="hljs-type">int</span> i;<br>	<span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;limit;i++)<br>	&#123;<br>		cout&lt;&lt;<span class="hljs-string">&quot;Enter value #&quot;</span>&lt;&lt;(i+<span class="hljs-number">1</span>)&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>;<br>		cin&gt;&gt;temp;<br>		<span class="hljs-keyword">if</span>(!cin)<br>		&#123;<br>			cin.<span class="hljs-built_in">clear</span>();	<span class="hljs-comment">//清除输入标志位 </span><br>			<span class="hljs-keyword">while</span>(cin.<span class="hljs-built_in">get</span>()!=<span class="hljs-string">&#x27;\n&#x27;</span>)<span class="hljs-comment">//清除输入队列内容 </span><br>				<span class="hljs-keyword">continue</span>;<br>			cout&lt;&lt;<span class="hljs-string">&quot;Bad input; input process terminated. \n&quot;</span>;<br>			<span class="hljs-keyword">break</span>;<br>		&#125;<br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(temp&lt;<span class="hljs-number">0</span>)<br>			<span class="hljs-keyword">break</span>;<br>		ar[i]=temp;<br>	&#125; <br>	<span class="hljs-keyword">return</span> i;<br>&#125;<br></code></pre></td></tr></table></figure>
+
 
                 
               </div>
@@ -343,7 +288,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">#计算机组成原理</a>
+        <a href="/tags/C/">#C++</a>
       
     </div>
   
@@ -355,8 +300,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>存储器扩展</div>
-      <div>https://singlerun.github.io/2022/05/02/计组笔记/存储器扩展/</div>
+      <div>检测输入了非法数据的例子</div>
+      <div>https://singlerun.github.io/2022/10/29/C++/检测输入了非法数据的例子/</div>
     </div>
     <div class="license-meta">
       
@@ -368,7 +313,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>May 2, 2022</div>
+          <div>October 29, 2022</div>
         </div>
       
       
@@ -400,15 +345,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/10/27/Python/%E6%95%B4%E7%90%86%E6%96%87%E4%BB%B6%E5%A4%B9/" title="整理文件夹">
+                      <a href="/2022/10/29/C++/array%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/" title="array的两种函数传参方式比较">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">整理文件夹</span>
+                        <span class="hidden-mobile">array的两种函数传参方式比较</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2022/10/27/Python/%E6%95%B4%E7%90%86%E6%96%87%E4%BB%B6%E5%A4%B9/" title="整理文件夹">
+                        <span class="hidden-mobile">整理文件夹</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
