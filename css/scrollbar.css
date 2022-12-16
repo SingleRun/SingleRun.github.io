@@ -10,7 +10,7 @@
     height: 50px;
     background-image: linear-gradient(
       rgba(173, 15, 15, 0),
-      rgb(119, 153, 250),
+      rgb(149, 167, 216),
       rgba(173, 15, 15, 0)
     );
     border-radius: 6px;
@@ -22,7 +22,7 @@
   ::-webkit-scrollbar-thumb:hover {
     background-image: linear-gradient(
       rgba(255, 255, 255, 0),
-      rgb(72, 120, 253),
+      rgb(149, 167, 216),
       rgba(255, 255, 255, 0)
     );
   }
