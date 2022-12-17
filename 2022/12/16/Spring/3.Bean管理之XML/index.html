@@ -25,7 +25,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://singlerun.github.io/2022/12/16/Spring/3.Bean%E7%AE%A1%E7%90%86%E4%B9%8BXML/image-20221216123421237.png">
 <meta property="article:published_time" content="2022-12-16T10:40:00.000Z">
-<meta property="article:modified_time" content="2022-12-17T06:52:36.837Z">
+<meta property="article:modified_time" content="2022-12-17T07:13:47.675Z">
 <meta property="article:author" content="C4n">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary_large_image">
@@ -255,7 +255,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.1k words
+          8.2k words
         
       </span>
     
@@ -317,7 +317,9 @@
             
               <div class="markdown-body">
                 
-                <h1 id="xml-方式"><a href="#xml-方式" class="headerlink" title="xml 方式"></a>xml 方式</h1><h2 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h2><p>加载配置文件时就会调用无参构造方式创建对象</p>
+                <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs markdown">Bean管理有两个操作，一个是创建对象（无参构造），另一个是注入属性（有参构造方法和Set方法）。而实现这两个操作都有两种方式，一个是基于xml配置文件实现，另一个是基于注解方式实现。<br></code></pre></td></tr></table></figure>
+
+<h1 id="xml-方式"><a href="#xml-方式" class="headerlink" title="xml 方式"></a>xml 方式</h1><h2 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h2><p>加载配置文件时就会调用无参构造方式创建对象</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--配置User对象创建--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;user&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;com.C4n.spring5.User&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
 <p>id 属性：唯一标识</p>
