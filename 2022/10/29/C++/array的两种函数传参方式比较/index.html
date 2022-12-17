@@ -417,12 +417,16 @@
   <div id="valine"></div>
   <script type="text/javascript">
     Fluid.utils.loadComments('#valine', function() {
-      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+      // Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function() {
         var options = Object.assign(
-          {"appId":"qaJ5jKKg99VJe9tLAVIteTqh-gzGzoHsz","appKey":"vrEKj061WGUadB3PLc8WywPN","path":"window.location.pathname","placeholder":"留下一条评论再走吧~","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {"appId":"qaJ5jKKg99VJe9tLAVIteTqh-gzGzoHsz","appKey":"vrEKj061WGUadB3PLc8WywPN","path":"window.location.pathname","placeholder":"留下一条评论再走吧~","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"master":"0db2f501c153ec179df0cb7ce250235d","friends":"a9126a74dxxxx638def0b16025,0173939xxxxx32a8cffc288b046dc"},
           {
             el: "#valine",
-            path: window.location.pathname
+            path: window.location.pathname,
+            master: "0db2f501c153ec179df0cb7ce250235d",
+            friends: "a9126a74dxxxx638def0b16025,0173939xxxxx32a8cffc288b046dc",
+            tagMeta: ["博主","友人","访客"],
           }
         )
         new Valine(options);
