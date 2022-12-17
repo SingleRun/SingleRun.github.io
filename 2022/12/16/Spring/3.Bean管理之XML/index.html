@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="C4n&#39;s Blog">
 <meta property="og:description" content="Bean管理有两个操作，一个是创建对象（无参构造），另一个是注入属性（有参构造方法和Set方法）。而实现这两个操作都有两种方式，一个是基于xml配置文件实现，另一个是基于注解方式实现。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://singlerun.github.io/2022/12/16/Spring/3.Bean%E7%AE%A1%E7%90%86%E4%B9%8BXML/image-20221216123421237.png">
+<meta property="og:image" content="https://wodiao.oss-cn-guangzhou.aliyuncs.com/img/2022-12-18-02-49-24/image-20221216123421237.png">
 <meta property="article:published_time" content="2022-12-16T10:40:00.000Z">
-<meta property="article:modified_time" content="2022-12-17T07:13:47.675Z">
+<meta property="article:modified_time" content="2022-12-17T18:49:24.976Z">
 <meta property="article:author" content="C4n">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://singlerun.github.io/2022/12/16/Spring/3.Bean%E7%AE%A1%E7%90%86%E4%B9%8BXML/image-20221216123421237.png">
+<meta name="twitter:image" content="https://wodiao.oss-cn-guangzhou.aliyuncs.com/img/2022-12-18-02-49-24/image-20221216123421237.png">
   
   
   
@@ -363,7 +363,7 @@
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--service和dao对象创建--&gt;</span><br>   <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;userService&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;com.C4n.spring5.service.UserService&quot;</span>&gt;</span><br>       <span class="hljs-comment">&lt;!--注入userDao对象</span><br><span class="hljs-comment">           name属性：UserService类里面的变量名</span><br><span class="hljs-comment">           ref属性：创建userDao对象时bean标签里的id值</span><br><span class="hljs-comment">       --&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;userDao&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;userDaoImpl&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>   <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br>   <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;userDaoImpl&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;com.C4n.spring5.dao.UserDaoImpl&quot;</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;巴拉巴拉&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;啦啦啦&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
 <p>第二种方法</p>
- <img src="/2022/12/16/Spring/3.Bean%E7%AE%A1%E7%90%86%E4%B9%8BXML/image-20221216123421237.png" srcset="/img/loading.gif" lazyload alt="image-20221216123421237" style="zoom:50%;">
+ <img src="https://wodiao.oss-cn-guangzhou.aliyuncs.com/img/2022-12-18-02-49-24/image-20221216123421237.png" srcset="/img/loading.gif" lazyload alt="image-20221216123421237" style="zoom:50%;">
 
 <p>这种方法需要在Dept类中实现get方法，因为他需要反射get获取dname，然后再用反射set进行赋值。</p>
 <h3 id="注入集合类型属性"><a href="#注入集合类型属性" class="headerlink" title="注入集合类型属性"></a>注入集合类型属性</h3><p>新建类Stu，自行生成set方法和tostring方法。</p>
