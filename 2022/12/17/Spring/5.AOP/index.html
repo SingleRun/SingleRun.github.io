@@ -25,7 +25,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://wodiao.oss-cn-guangzhou.aliyuncs.com/img/2022-12-18-12-47-14/image-20221217200623687.png">
 <meta property="article:published_time" content="2022-12-17T15:00:00.000Z">
-<meta property="article:modified_time" content="2022-12-18T04:47:15.386Z">
+<meta property="article:modified_time" content="2022-12-18T05:46:24.062Z">
 <meta property="article:author" content="C4n">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary_large_image">
@@ -268,7 +268,7 @@
         
         
         
-          41 mins
+          42 mins
         
       </span>
     
@@ -319,7 +319,9 @@
             
               <div class="markdown-body">
                 
-                <h1 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h1><p>AOP底层就是用动态代理实现</p>
+                <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs markdown">也就是面向切面编程，也就是在不改变源代码的基础上，对方法进行增强或扩展。<br></code></pre></td></tr></table></figure>
+
+<h1 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h1><p>AOP底层就是用动态代理实现</p>
 <h2 id="编写UserDao类"><a href="#编写UserDao类" class="headerlink" title="编写UserDao类"></a>编写UserDao类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.C4n.spring5.dao;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserDaoImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserDao</span><br>&#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span><br>    &#123;<br>        System.out.println(<span class="hljs-string">&quot;add执行了&quot;</span>);<br>        <span class="hljs-keyword">return</span> a+b;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">update</span><span class="hljs-params">(String id)</span><br>    &#123;<br>        System.out.println(<span class="hljs-string">&quot;update执行了&quot;</span>);<br>        <span class="hljs-keyword">return</span> id;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h2 id="编写代理类以及测试类"><a href="#编写代理类以及测试类" class="headerlink" title="编写代理类以及测试类"></a>编写代理类以及测试类</h2><p>Proxy.newProxyInstance()有三个参数:</p>
