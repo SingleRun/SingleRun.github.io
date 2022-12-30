@@ -16,22 +16,22 @@
   <meta name="author" content="C4n">
   <meta name="keywords" content="">
   
-    <meta name="description" content="介绍基于配置文件配置异常处理器和基于注解配置异常处理器">
+    <meta name="description" content="springMVC的完全注解开发">
 <meta property="og:type" content="article">
-<meta property="og:title" content="10.异常处理器">
-<meta property="og:url" content="https://singlerun.github.io/2022/12/30/SpringMVC/10.%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8/index.html">
+<meta property="og:title" content="11.注解配置SpringMVC">
+<meta property="og:url" content="https://singlerun.github.io/2022/12/30/SpringMVC/11.%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AESpringMVC/index.html">
 <meta property="og:site_name" content="C4n&#39;s Blog">
-<meta property="og:description" content="介绍基于配置文件配置异常处理器和基于注解配置异常处理器">
+<meta property="og:description" content="springMVC的完全注解开发">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-12-29T17:01:34.000Z">
-<meta property="article:modified_time" content="2022-12-29T17:29:49.660Z">
+<meta property="article:published_time" content="2022-12-30T06:01:34.000Z">
+<meta property="article:modified_time" content="2022-12-30T06:01:15.689Z">
 <meta property="article:author" content="C4n">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>10.异常处理器 - C4n&#39;s Blog</title>
+  <title>11.注解配置SpringMVC - C4n&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -232,7 +232,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="10.异常处理器"></span>
+            <span id="subtitle" data-typed-text="11.注解配置SpringMVC"></span>
           
         </div>
 
@@ -243,8 +243,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-12-30 01:01" pubdate>
-          December 30, 2022 am
+        <time datetime="2022-12-30 14:01" pubdate>
+          December 30, 2022 pm
         </time>
       </span>
     
@@ -255,7 +255,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          3.6k words
         
       </span>
     
@@ -266,7 +266,7 @@
         
         
         
-          15 mins
+          31 mins
         
       </span>
     
@@ -312,32 +312,30 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">10.异常处理器</h1>
+            <h1 style="display: none">11.注解配置SpringMVC</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="基于xml配置文件"><a href="#基于xml配置文件" class="headerlink" title="基于xml配置文件"></a>基于xml配置文件</h1><h2 id="配置异常处理器"><a href="#配置异常处理器" class="headerlink" title="配置异常处理器"></a>配置异常处理器</h2><p>配置出现算术运算异常就跳转到error</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--配置异常处理器--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">bean</span></span><br><span class="hljs-tag">        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.web.servlet.handler.SimpleMappingExceptionResolver&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;exceptionMappings&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">props</span>&gt;</span><br>            <span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">            properties的键表示处理器方法执行过程中出现的异常</span><br><span class="hljs-comment">            properties的值表示若出现指定异常时，设置一个新的视图名称，跳转到指定页面</span><br><span class="hljs-comment">            --&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">prop</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&quot;java.lang.ArithmeticException&quot;</span>&gt;</span>error<span class="hljs-tag">&lt;/<span class="hljs-name">prop</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">props</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br></code></pre></td></tr></table></figure>
+                <p>使用配置类和注解代替web.xml和SpringMVC配置文件的功能</p>
+<h1 id="配置web-xml"><a href="#配置web-xml" class="headerlink" title="配置web.xml"></a>配置web.xml</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WebInit</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AbstractAnnotationConfigDispatcherServletInitializer</span><br>&#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> Class&lt;?&gt;[] getRootConfigClasses()<br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Class</span>[]&#123;SpringConfig.class&#125;;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> Class&lt;?&gt;[] getServletConfigClasses()<br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Class</span>[]&#123;WebConfig.class&#125;;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> String[] getServletMappings()<br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>[]&#123;<span class="hljs-string">&quot;/&quot;</span>&#125;;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> Filter[] getServletFilters()<br>    &#123;<br>        <span class="hljs-type">CharacterEncodingFilter</span> <span class="hljs-variable">characterEncodingFilter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CharacterEncodingFilter</span>(<span class="hljs-string">&quot;UTF-8&quot;</span>,<span class="hljs-literal">true</span>);<br><br>        <span class="hljs-type">HiddenHttpMethodFilter</span> <span class="hljs-variable">hiddenHttpMethodFilter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HiddenHttpMethodFilter</span>();<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Filter</span>[]&#123;characterEncodingFilter,hiddenHttpMethodFilter&#125;;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="编写控制器"><a href="#编写控制器" class="headerlink" title="编写控制器"></a>编写控制器</h2><p>这个控制器用来模拟算术运算异常</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/testExceptionHandler&quot;)</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">testExceptionHandler</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">int</span> i=<span class="hljs-number">10</span>/<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;success&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="配置视图解析器"><a href="#配置视图解析器" class="headerlink" title="配置视图解析器"></a>配置视图解析器</h1><p>配置SpringMVC.xml</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 代替SpringMVC的配置文件</span><br><span class="hljs-comment"> * 1.扫描组件   2.视图解析器 3.view-controller   4.default-servlet-handler</span><br><span class="hljs-comment"> * 5.mvc注解驱动    6.文件上传解析器   7.异常处理  8.拦截器</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-comment">//扫描组件</span><br><span class="hljs-meta">@ComponentScan(&quot;com.c4n.demo&quot;)</span><br><span class="hljs-comment">//开启MVC注解驱动</span><br><span class="hljs-meta">@EnableWebMvc</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WebConfig</span><br>&#123;<br>    <span class="hljs-comment">//配置生成模板解析器</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> ITemplateResolver <span class="hljs-title function_">templateResolver</span><span class="hljs-params">()</span><br>    &#123;<br>        <span class="hljs-type">WebApplicationContext</span> <span class="hljs-variable">webApplicationContext</span> <span class="hljs-operator">=</span> ContextLoader.getCurrentWebApplicationContext();<br>        <span class="hljs-comment">// ServletContextTemplateResolver需要一个ServletContext作为构造参数，可通过 WebApplicationContext 的方法获得</span><br>        <span class="hljs-type">ServletContextTemplateResolver</span> <span class="hljs-variable">templateResolver</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ServletContextTemplateResolver</span>(webApplicationContext.getServletContext());<br>        templateResolver.setPrefix(<span class="hljs-string">&quot;/WEB-INF/templates/&quot;</span>);<br>        templateResolver.setSuffix(<span class="hljs-string">&quot;.html&quot;</span>);<br>        templateResolver.setCharacterEncoding(<span class="hljs-string">&quot;UTF-8&quot;</span>);<br>        templateResolver.setTemplateMode(TemplateMode.HTML);<br>        <span class="hljs-keyword">return</span> templateResolver;<br>    &#125;<br><br>    <span class="hljs-comment">//生成模板引擎并为模板引擎注入模板解析器</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> SpringTemplateEngine <span class="hljs-title function_">templateEngine</span><span class="hljs-params">(ITemplateResolver templateResolver)</span><br>    &#123;<br>        <span class="hljs-type">SpringTemplateEngine</span> <span class="hljs-variable">templateEngine</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpringTemplateEngine</span>();<br>        templateEngine.setTemplateResolver(templateResolver);<br>        <span class="hljs-keyword">return</span> templateEngine;<br>    &#125;<br><br>    <span class="hljs-comment">//生成视图解析器并未解析器注入模板引擎</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> ViewResolver <span class="hljs-title function_">viewResolver</span><span class="hljs-params">(SpringTemplateEngine templateEngine)</span><br>    &#123;<br>        <span class="hljs-type">ThymeleafViewResolver</span> <span class="hljs-variable">viewResolver</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThymeleafViewResolver</span>();<br>        viewResolver.setCharacterEncoding(<span class="hljs-string">&quot;UTF-8&quot;</span>);<br>        viewResolver.setTemplateEngine(templateEngine);<br>        <span class="hljs-keyword">return</span> viewResolver;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="编写视图"><a href="#编写视图" class="headerlink" title="编写视图"></a>编写视图</h2><p>编写index.html</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">th:href</span>=<span class="hljs-string">&quot;@&#123;/testExceptionHandler&#125;&quot;</span>&gt;</span>测试异常处理器<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h1 id="配置视图控制器"><a href="#配置视图控制器" class="headerlink" title="配置视图控制器"></a>配置视图控制器</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//配置视图控制器</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addViewControllers</span><span class="hljs-params">(ViewControllerRegistry registry)</span><br>&#123;<br>    registry.addViewController(<span class="hljs-string">&quot;/&quot;</span>).setViewName(<span class="hljs-string">&quot;index&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>编写error.html</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span> <span class="hljs-attr">xmlns:th</span>=<span class="hljs-string">&quot;http://www.thymeleaf.org&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>数学运算异常<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>数学运算异常<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>然后就可以访问首页了</p>
+<h1 id="配置default-servlet-handler"><a href="#配置default-servlet-handler" class="headerlink" title="配置default-servlet-handler"></a>配置default-servlet-handler</h1><p>由于这并不是一个bean标签，我们不能加上bean注解来实现，而是应该实现一个接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WebConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">WebMvcConfigurer</span><br>&#123;<br>    <span class="hljs-comment">//default-servlet-handler</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">configureDefaultServletHandling</span><span class="hljs-params">(DefaultServletHandlerConfigurer configurer)</span><br>    &#123;<br>       configurer.enable();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="error页面显示异常信息"><a href="#error页面显示异常信息" class="headerlink" title="error页面显示异常信息"></a>error页面显示异常信息</h2><p>在异常处理器配置中加入这个</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">exceptionAttribute属性设置一个属性名，将出现的异常信息在请求域中进行共享</span><br><span class="hljs-comment">--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;exceptionAttribute&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;ex&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h1 id="配置拦截器"><a href="#配置拦截器" class="headerlink" title="配置拦截器"></a>配置拦截器</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//配置拦截器</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addInterceptors</span><span class="hljs-params">(InterceptorRegistry registry)</span><br>&#123;<br>    registry.addInterceptor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">FirstInterceptor</span>()).addPathPatterns(<span class="hljs-string">&quot;/**&quot;</span>).excludePathPatterns(<span class="hljs-string">&quot;/&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>在error页面中获取异常信息</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;ex&#125;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h1 id="配置文件上传解析器"><a href="#配置文件上传解析器" class="headerlink" title="配置文件上传解析器"></a>配置文件上传解析器</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//文件上传解析器</span><br><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> MultipartResolver <span class="hljs-title function_">multipartResolver</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">CommonsMultipartResolver</span> <span class="hljs-variable">commonsMultipartResolver</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CommonsMultipartResolver</span>();<br>    <span class="hljs-keyword">return</span> commonsMultipartResolver;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h1 id="基于注解"><a href="#基于注解" class="headerlink" title="基于注解"></a>基于注解</h1><h2 id="实现跳转"><a href="#实现跳转" class="headerlink" title="实现跳转"></a>实现跳转</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@ControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ExceptionController</span><br>&#123;<br>    <span class="hljs-meta">@ExceptionHandler(value = &#123;ArithmeticException.class&#125;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">testException</span><span class="hljs-params">()</span><br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;error&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="配置异常处理"><a href="#配置异常处理" class="headerlink" title="配置异常处理"></a>配置异常处理</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//配置异常处理器</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">configureHandlerExceptionResolvers</span><span class="hljs-params">(List&lt;HandlerExceptionResolver&gt; resolvers)</span> <br>&#123;<br>    <span class="hljs-type">SimpleMappingExceptionResolver</span> <span class="hljs-variable">exceptionResolver</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleMappingExceptionResolver</span>();<br>    <span class="hljs-type">Properties</span> <span class="hljs-variable">prop</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Properties</span>();<br>    prop.setProperty(<span class="hljs-string">&quot;java.lang.ArithmeticException&quot;</span>, <span class="hljs-string">&quot;error&quot;</span>);<br>    <span class="hljs-comment">//设置异常映射</span><br>    exceptionResolver.setExceptionMappings(prop);<br>    <span class="hljs-comment">//设置共享异常信息的键</span><br>    exceptionResolver.setExceptionAttribute(<span class="hljs-string">&quot;ex&quot;</span>);<br>    resolvers.add(exceptionResolver);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="error页面显示异常信息-1"><a href="#error页面显示异常信息-1" class="headerlink" title="error页面显示异常信息"></a>error页面显示异常信息</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@ControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ExceptionController</span><br>&#123;<br>    <span class="hljs-meta">@ExceptionHandler(value = &#123;ArithmeticException.class&#125;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">testException</span><span class="hljs-params">(Exception ex, Model model)</span><br>    &#123;<br>        model.addAttribute(<span class="hljs-string">&quot;ex&quot;</span>,ex);<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;error&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
                 
               </div>
             
@@ -382,8 +380,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>10.异常处理器</div>
-      <div>https://singlerun.github.io/2022/12/30/SpringMVC/10.异常处理器/</div>
+      <div>11.注解配置SpringMVC</div>
+      <div>https://singlerun.github.io/2022/12/30/SpringMVC/11.注解配置SpringMVC/</div>
     </div>
     <div class="license-meta">
       
@@ -427,18 +425,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/12/30/SpringMVC/11.%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AESpringMVC/" title="11.注解配置SpringMVC">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">11.注解配置SpringMVC</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/12/29/SpringMVC/9.%E6%8B%A6%E6%88%AA%E5%99%A8/" title="9.拦截器">
-                        <span class="hidden-mobile">9.拦截器</span>
+                      <a href="/2022/12/30/SpringMVC/10.%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8/" title="10.异常处理器">
+                        <span class="hidden-mobile">10.异常处理器</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
