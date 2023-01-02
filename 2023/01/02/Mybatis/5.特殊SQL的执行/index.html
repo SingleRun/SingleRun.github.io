@@ -16,22 +16,22 @@
   <meta name="author" content="C4n">
   <meta name="keywords" content="">
   
-    <meta name="description" content="介绍获取参数的多种情况。">
+    <meta name="description" content="介绍模糊查询、批量删除、动态设置表名、获取自增主键。主要在于体会什么时候就使用${}">
 <meta property="og:type" content="article">
-<meta property="og:title" content="3.获取参数值">
-<meta property="og:url" content="https://singlerun.github.io/2023/01/01/Mybatis/3.%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0%E5%80%BC/index.html">
+<meta property="og:title" content="5.特殊SQL的执行">
+<meta property="og:url" content="https://singlerun.github.io/2023/01/02/Mybatis/5.%E7%89%B9%E6%AE%8ASQL%E7%9A%84%E6%89%A7%E8%A1%8C/index.html">
 <meta property="og:site_name" content="C4n&#39;s Blog">
-<meta property="og:description" content="介绍获取参数的多种情况。">
+<meta property="og:description" content="介绍模糊查询、批量删除、动态设置表名、获取自增主键。主要在于体会什么时候就使用${}">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-01-01T08:01:05.000Z">
-<meta property="article:modified_time" content="2023-01-01T14:46:15.859Z">
+<meta property="article:published_time" content="2023-01-02T08:01:05.000Z">
+<meta property="article:modified_time" content="2023-01-02T12:27:20.481Z">
 <meta property="article:author" content="C4n">
 <meta property="article:tag" content="Mybatis">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>3.获取参数值 - C4n&#39;s Blog</title>
+  <title>5.特殊SQL的执行 - C4n&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -232,7 +232,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="3.获取参数值"></span>
+            <span id="subtitle" data-typed-text="5.特殊SQL的执行"></span>
           
         </div>
 
@@ -243,8 +243,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-01-01 16:01" pubdate>
-          January 1, 2023 pm
+        <time datetime="2023-01-02 16:01" pubdate>
+          January 2, 2023 pm
         </time>
       </span>
     
@@ -255,7 +255,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.1k words
+          2.7k words
         
       </span>
     
@@ -266,7 +266,7 @@
         
         
         
-          26 mins
+          23 mins
         
       </span>
     
@@ -312,61 +312,50 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">3.获取参数值</h1>
+            <h1 style="display: none">5.特殊SQL的执行</h1>
             
             
               <div class="markdown-body">
                 
-                <blockquote>
-<p>MyBatis获取参数值的两种方式<br>${}：本质就是字符串拼接，所以会造成sql注入，攻击者可以把查询语句传入参数并拼接到我们的sql语句中<br>#{}：本质就是占位符赋值，不会发生sql注入</p>
+                <h1 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h1><p>我们先尝试能不能直接使用#{}来进行模糊查询</p>
+<h2 id="编写mapper接口方法"><a href="#编写mapper接口方法" class="headerlink" title="编写mapper接口方法"></a>编写mapper接口方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//模糊查询</span><br>List&lt;User&gt; <span class="hljs-title function_">getUserByLike</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;username&quot;)</span> String username)</span>;<br></code></pre></td></tr></table></figure>
+
+<h2 id="编写mapper映射"><a href="#编写mapper映射" class="headerlink" title="编写mapper映射"></a>编写mapper映射</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getUserByLike&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from mb_user where username like &#x27;%#&#123;username&#125;%&#x27;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getUserByLike</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">SelectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(SelectMapper.class);<br>    mapper.getUserByLike(<span class="hljs-string">&quot;小&quot;</span>).forEach(System.out::println);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后我们从测试结果可以看到占位符<code>?</code>失效了，因为它存在于一个单引号里面，被当成了普通字符进行处理，我们只需要更改sql查询语句就能让程序正常运行</p>
+<h2 id="第一种方法"><a href="#第一种方法" class="headerlink" title="第一种方法"></a>第一种方法</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getUserByLike&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from mb_user where username like &#x27;%$&#123;username&#125;%&#x27;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="第二种方法"><a href="#第二种方法" class="headerlink" title="第二种方法"></a>第二种方法</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getUserByLike&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from mb_user where username like concat(&#x27;%&#x27;,#&#123;username&#125;,&#x27;%&#x27;)<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="第三种方法"><a href="#第三种方法" class="headerlink" title="第三种方法"></a>第三种方法</h2><p>只能用双引号</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getUserByLike&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from mb_user where username like &quot;%&quot;#&#123;username&#125;&quot;%&quot;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="批量删除"><a href="#批量删除" class="headerlink" title="批量删除"></a>批量删除</h1><blockquote>
+<p>只能使用${}。如果使用#{}，则解析后的sql语句为 <code>delete from t_user where id in (&#39;1,2,3&#39;) </code>，这并不是我们要的结果。</p>
 </blockquote>
-<h1 id="单个字面量类型参数"><a href="#单个字面量类型参数" class="headerlink" title="单个字面量类型参数"></a>单个字面量类型参数</h1><p>例如我们要通过用户名来查询用户信息</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//根据用户名查询用户信息</span><br>User <span class="hljs-title function_">getUserByUsername</span><span class="hljs-params">(String username)</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="编写mapper接口方法-1"><a href="#编写mapper接口方法-1" class="headerlink" title="编写mapper接口方法"></a>编写mapper接口方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//批量删除</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">deleteMore</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;ids&quot;)</span> String ids)</span>;<br></code></pre></td></tr></table></figure>
 
-<p>那么我们mapper映射文件可以这么写</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getUserByUsername&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from mb_user where username=#&#123;username&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h2 id="编写mapper映射-1"><a href="#编写mapper映射-1" class="headerlink" title="编写mapper映射"></a>编写mapper映射</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">delete</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;deleteMore&quot;</span>&gt;</span><br>    delete from mb_user where id in ($&#123;ids&#125;)<br><span class="hljs-tag">&lt;/<span class="hljs-name">delete</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
-<p>或者这么写，注意这是字符串拼接，所以我们得手动加上单引号</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getUserByUsername&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from mb_user where username=&#x27;$&#123;username&#125;&#x27;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h2 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteMore</span><span class="hljs-params">()</span> <br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">SQLMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(SQLMapper.class);<br>    System.out.println(mapper.deleteMore(<span class="hljs-string">&quot;1,2,3,8&quot;</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>大括号里的内容可以随便写，但我们一般会写参数名，也就是<code>username</code>，所以也注定了这种方式不能根据参数名传入参数</p>
-<h1 id="多个字面量类型参数"><a href="#多个字面量类型参数" class="headerlink" title="多个字面量类型参数"></a>多个字面量类型参数</h1><p>例如我们要做验证登录功能</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//验证登录</span><br>User <span class="hljs-title function_">checkLogin</span><span class="hljs-params">(String username,String password )</span>;<br></code></pre></td></tr></table></figure>
+<h1 id="动态设置表名"><a href="#动态设置表名" class="headerlink" title="动态设置表名"></a>动态设置表名</h1><blockquote>
+<p>同样只能使用${}，因为我们在表名那个位置不能加上单引号，不然就是错误的sql语句</p>
+</blockquote>
+<h2 id="编写mapper接口方法-2"><a href="#编写mapper接口方法-2" class="headerlink" title="编写mapper接口方法"></a>编写mapper接口方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//动态设置表名</span><br>List&lt;User&gt; <span class="hljs-title function_">getUserByTable</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;tableName&quot;)</span> String tableName)</span>;<br></code></pre></td></tr></table></figure>
 
-<p>然后我们写上了这样的映射文件</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;checkLogin&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from mb_user where username=#&#123;username&#125; and password=#&#123;password&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h2 id="编写mapper映射-2"><a href="#编写mapper映射-2" class="headerlink" title="编写mapper映射"></a>编写mapper映射</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getUserByTable&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from $&#123;tableName&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
-<p>当我们进行测试时，发现解释器给我们报了这样一个异常</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">org.apache.ibatis.exceptions.PersistenceException: <br>### Error querying database.  Cause: org.apache.ibatis.binding.BindingException: Parameter <span class="hljs-string">&#x27;username&#x27;</span> not found. Available parameters are [arg1, arg0, param1, param2]<br>### Cause: org.apache.ibatis.binding.BindingException: Parameter <span class="hljs-string">&#x27;username&#x27;</span> not found. Available parameters are [arg1, arg0, param1, param2]<br></code></pre></td></tr></table></figure>
+<h2 id="测试-2"><a href="#测试-2" class="headerlink" title="测试"></a>测试</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getUserByTable</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    sqlSession.getMapper(SQLMapper.class).getUserByTable(<span class="hljs-string">&quot;mb_user&quot;</span>).forEach(System.out::println);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>大概意思就是说他找不到名为’username’的键可以绑定，但他检测到了我们传入多个参数，我们可以通过[arg1, arg0, param1, param2]来进行传值，而我们传值时是根据参数列表的顺序，而不是参数名。这同时也决定了我们通过这种方式最多传入4个参数。</p>
-<p>所以我们把映射文件改为这样就行了</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;checkLogin&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from mb_user where username=#&#123;arg0&#125; and password=#&#123;arg1&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h1 id="获取自增的主键"><a href="#获取自增的主键" class="headerlink" title="获取自增的主键"></a>获取自增的主键</h1><h2 id="编写mapper接口方法-3"><a href="#编写mapper接口方法-3" class="headerlink" title="编写mapper接口方法"></a>编写mapper接口方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//获取自增的主键</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">insertUser</span><span class="hljs-params">(User user)</span>;<br></code></pre></td></tr></table></figure>
 
-<h1 id="map集合类型的参数"><a href="#map集合类型的参数" class="headerlink" title="map集合类型的参数"></a>map集合类型的参数</h1><p>在上面传入多个字面量类型参数的例子中，我们就发现Mybatis其实是通过一个Map集合将参数传入到sql语句之中，而键值有[arg1, arg0, param1, param2]这四个，所以我们也尝试能不能通过手动传入map集合的方式来进行传值。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//通过map集合的方式验证登录</span><br>User <span class="hljs-title function_">checkLoginByMap</span><span class="hljs-params">(Map&lt;String,Object&gt; map)</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="编写mapper映射-3"><a href="#编写mapper映射-3" class="headerlink" title="编写mapper映射"></a>编写mapper映射</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">insert</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;insertUser&quot;</span> <span class="hljs-attr">useGeneratedKeys</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">keyProperty</span>=<span class="hljs-string">&quot;id&quot;</span>&gt;</span><br>    insert into mb_user values (null,#&#123;username&#125;,#&#123;password&#125;,#&#123;age&#125;,#&#123;sex&#125;,#&#123;email&#125;)<br><span class="hljs-tag">&lt;/<span class="hljs-name">insert</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
-<p>然后我们写上了这样的映射文件，这里表示了我们的map集合中得有”username”和”password”这两个键</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;checkLoginByMap&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from mb_user where username=#&#123;username&#125; and password=#&#123;password&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-<p>测试代码，注意这里的键要设置为”username”和”password”</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">TestGetAllUser</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException<br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">ParameterMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(ParameterMapper.class);<br>    Map&lt;String,Object&gt; map= <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>();<br>    map.put(<span class="hljs-string">&quot;username&quot;</span>,<span class="hljs-string">&quot;小美&quot;</span>);<br>    map.put(<span class="hljs-string">&quot;password&quot;</span>,<span class="hljs-string">&quot;123&quot;</span>);<br>    System.out.println(mapper.checkLoginByMap(map));<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h1 id="实体类类型的参数"><a href="#实体类类型的参数" class="headerlink" title="实体类类型的参数"></a>实体类类型的参数</h1><p>例如我们要添加一个新用户</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 添加新用户</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">insertUser</span><span class="hljs-params">(User user)</span>;<br></code></pre></td></tr></table></figure>
-
-<p>那我们映射文件可以这样写</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">insert</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;insertUser&quot;</span>&gt;</span><br>    insert into mb_user values(null,#&#123;username&#125;,#&#123;password&#125;,#&#123;age&#125;,#&#123;sex&#125;,#&#123;email&#125;)<br><span class="hljs-tag">&lt;/<span class="hljs-name">insert</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-<h1 id="使用-Param标识参数"><a href="#使用-Param标识参数" class="headerlink" title="使用@Param标识参数"></a>使用@Param标识参数</h1><p>这种方法相当于在Mybatis内部的Map中添加了键</p>
-<p>我们仍然以验证登录为例子</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//使用@Param标识参数的方式验证登录</span><br>User <span class="hljs-title function_">checkLoginByParam</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;username&quot;)</span> String username,<span class="hljs-meta">@Param(&quot;password&quot;)</span> String password)</span>;<br></code></pre></td></tr></table></figure>
-
-<p>那我们映射文件可以这样写</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;checkLoginByParam&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    select * from mb_user where username=#&#123;username&#125; and password=#&#123;password&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-<p>执行sql语句时，代理类内部存有这样的信息：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs json">param<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&#123;password=123456, param1=小美, username=小美, param2=123456&#125;&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="测试-3"><a href="#测试-3" class="headerlink" title="测试"></a>测试</h2><p>你会发现，执行完sql语句后，user的id属性被注入了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">insertUser</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    User user=<span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;ton&quot;</span>, <span class="hljs-string">&quot;123&quot;</span>, <span class="hljs-number">23</span>, <span class="hljs-string">&quot;男&quot;</span>, <span class="hljs-string">&quot;123@321.com&quot;</span>);<br>    sqlSession.getMapper(SQLMapper.class).insertUser(user);<br>    System.out.println(user);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 
                 
@@ -413,8 +402,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>3.获取参数值</div>
-      <div>https://singlerun.github.io/2023/01/01/Mybatis/3.获取参数值/</div>
+      <div>5.特殊SQL的执行</div>
+      <div>https://singlerun.github.io/2023/01/02/Mybatis/5.特殊SQL的执行/</div>
     </div>
     <div class="license-meta">
       
@@ -426,7 +415,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>January 1, 2023</div>
+          <div>January 2, 2023</div>
         </div>
       
       
@@ -458,18 +447,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/01/02/Mybatis/4.%E5%B0%86%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E5%AD%98%E5%85%A5Map%E9%9B%86%E5%90%88/" title="4.将查询结果存入Map集合">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">4.将查询结果存入Map集合</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/01/01/Mybatis/2.%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%92%8C%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6%E6%A8%A1%E6%9D%BF/" title="2.创建配置文件和映射文件模板">
-                        <span class="hidden-mobile">2.创建配置文件和映射文件模板</span>
+                      <a href="/2023/01/02/Mybatis/4.%E5%B0%86%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E5%AD%98%E5%85%A5Map%E9%9B%86%E5%90%88/" title="4.将查询结果存入Map集合">
+                        <span class="hidden-mobile">4.将查询结果存入Map集合</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
