@@ -1,0 +1,817 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/%E7%AD%BE%E5%90%8D.png">
+  <link rel="icon" href="/img/%E7%AD%BE%E5%90%8D.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="C4n">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="介绍多对一映射的三种方法，延迟映射以及一对多映射。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.映射">
+<meta property="og:url" content="https://singlerun.github.io/2023/01/03/Mybatis/6.%E6%98%A0%E5%B0%84/index.html">
+<meta property="og:site_name" content="C4n&#39;s Blog">
+<meta property="og:description" content="介绍多对一映射的三种方法，延迟映射以及一对多映射。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-03T12:01:05.000Z">
+<meta property="article:modified_time" content="2023-01-03T13:18:05.948Z">
+<meta property="article:author" content="C4n">
+<meta property="article:tag" content="Mybatis">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>6.映射 - C4n&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollbar.css">
+<link rel="stylesheet" href="/css/indeximg-hover.css">
+<link rel="stylesheet" href="/css/article-img-filter.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"singlerun.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"AQNrC3J79U0niVtcajHSTiB9-gzGzoHsz","app_key":"mOrU7zi8ilWb8oKYv5xYF7wI","server_url":"https://aqnrc3j7.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>C4n</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/remark/">
+                <i class="iconfont icon-cliplist"></i>
+                <span>Remark</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://wodiao.oss-cn-guangzhou.aliyuncs.com/img/%E5%AE%AB%E6%B0%B4%E4%B8%89%E5%8F%B6.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="6.映射"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-03 20:01" pubdate>
+          January 3, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.9k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          74 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span>
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">6.映射</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h2><p>这里注意<code>emp_name</code>是下划线命名法，sql中习惯用这种命名法。<br>而java中习惯使用小驼峰命名法，所以会发生字段名与属性名不一致的情况。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> mb_emp(<br>	eid <span class="hljs-type">INT</span> <span class="hljs-keyword">PRIMARY</span> KEY AUTO_INCREMENT,<br>	emp_name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>),<br>	age <span class="hljs-type">INT</span>,<br>	sex <span class="hljs-type">CHAR</span>,<br>	email <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>),<br>	did <span class="hljs-type">INT</span>(<span class="hljs-number">11</span>)<br>)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> mb_dept(<br>	did <span class="hljs-type">INT</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">PRIMARY</span> KEY AUTO_INCREMENT,<br>	dept_name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>)<br>)<br></code></pre></td></tr></table></figure>
+
+<h2 id="导入例表数据"><a href="#导入例表数据" class="headerlink" title="导入例表数据"></a>导入例表数据</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `mb_emp`(`eid`, `emp_name`, `age`, `sex`, `email`, `did`) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;张三&#x27;</span>, <span class="hljs-number">23</span>, <span class="hljs-string">&#x27;男&#x27;</span>, <span class="hljs-string">&#x27;123@qq.com&#x27;</span>, <span class="hljs-number">1</span>);<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `mb_emp`(`eid`, `emp_name`, `age`, `sex`, `email`, `did`) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;李四&#x27;</span>, <span class="hljs-number">32</span>, <span class="hljs-string">&#x27;女&#x27;</span>, <span class="hljs-string">&#x27;123@qq.com&#x27;</span>, <span class="hljs-number">2</span>);<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `mb_emp`(`eid`, `emp_name`, `age`, `sex`, `email`, `did`) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>, <span class="hljs-string">&#x27;王五&#x27;</span>, <span class="hljs-number">12</span>, <span class="hljs-string">&#x27;男&#x27;</span>, <span class="hljs-string">&#x27;123@qq.com&#x27;</span>, <span class="hljs-number">3</span>);<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `mb_emp`(`eid`, `emp_name`, `age`, `sex`, `email`, `did`) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">4</span>, <span class="hljs-string">&#x27;赵六&#x27;</span>, <span class="hljs-number">34</span>, <span class="hljs-string">&#x27;女&#x27;</span>, <span class="hljs-string">&#x27;123@qq.com&#x27;</span>, <span class="hljs-number">1</span>);<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `mb_emp`(`eid`, `emp_name`, `age`, `sex`, `email`, `did`) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">5</span>, <span class="hljs-string">&#x27;田七&#x27;</span>, <span class="hljs-number">28</span>, <span class="hljs-string">&#x27;男&#x27;</span>, <span class="hljs-string">&#x27;123@qq.com&#x27;</span>, <span class="hljs-number">2</span>);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `mb_dept`(`did`, `dept_name`) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;A&#x27;</span>);<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `mb_dept`(`did`, `dept_name`) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;B&#x27;</span>);<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `mb_dept`(`did`, `dept_name`) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>, <span class="hljs-string">&#x27;C&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<h2 id="创建实体类"><a href="#创建实体类" class="headerlink" title="创建实体类"></a>创建实体类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Emp</span><br>&#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> eid;<br>  <span class="hljs-keyword">private</span> String empName;<br>  <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> age;<br>  <span class="hljs-keyword">private</span> String sex;<br>  <span class="hljs-keyword">private</span> String email;<br>  <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> did;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Dept</span><br>&#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> did;<br>  <span class="hljs-keyword">private</span> String deptName;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="查询所有员工所有信息"><a href="#查询所有员工所有信息" class="headerlink" title="查询所有员工所有信息"></a>查询所有员工所有信息</h1><p>你会发现可以查到结果，但是empName都为null，这就是我们接下来要解决的问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getAllEmp</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">EmpMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(EmpMapper.class);<br>    mapper.getAllEmp().forEach(System.out::println);<br>    sqlSession.close();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以下三种方式都可以解决这个问题</p>
+<h2 id="起别名"><a href="#起别名" class="headerlink" title="起别名"></a>起别名</h2><p>只需修改SQL语句即可</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getAllEmp&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Emp&quot;</span>&gt;</span><br>    select eid,emp_name empName,age,sex,email from mb_emp<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="修改核心配置文件"><a href="#修改核心配置文件" class="headerlink" title="修改核心配置文件"></a>修改核心配置文件</h2><p>在核心配置文件中加上这一条</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--将下划线命名法映射为小驼峰命名法--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">settings</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">setting</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;mapUnderscoreToCamelCase&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">settings</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="自定义映射"><a href="#自定义映射" class="headerlink" title="自定义映射"></a>自定义映射</h2><p><code>property</code>是属性名，<code>column</code>是字段名</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--自定义映射--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;empMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Emp&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;empName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;emp_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><span class="hljs-comment">&lt;!--id要和mapper接口内方法名一致，在下面编写sql语句--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getAllEmp&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Emp&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;empMap&quot;</span>&gt;</span><br>    select * from mb_emp<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="多对一映射"><a href="#多对一映射" class="headerlink" title="多对一映射"></a>多对一映射</h1><p>在实体类Emp中加入Dept属性，并为其生成get方法和set方法，用于查询员工所在部门信息。而我们此时就是要把查询到的dept表中的内容映射到dept属性中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> Dept dept;<br></code></pre></td></tr></table></figure>
+
+<h2 id="第一种方法"><a href="#第一种方法" class="headerlink" title="第一种方法"></a>第一种方法</h2><h3 id="编写mapper接口方法"><a href="#编写mapper接口方法" class="headerlink" title="编写mapper接口方法"></a>编写mapper接口方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//获取单个员工的所有信息和所在部门的信息</span><br>Emp <span class="hljs-title function_">getOneEmyAndDept</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;eid&quot;)</span> Integer id)</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="编写mapper映射"><a href="#编写mapper映射" class="headerlink" title="编写mapper映射"></a>编写mapper映射</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;oneEmpAndDeptMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Emp&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;empName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;emp_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;dept.deptName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;dept_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;dept.did&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;did&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getOneEmyAndDept&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Emp&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;oneEmpAndDeptMap&quot;</span>&gt;</span><br>    select * from mb_emp,mb_dept where mb_emp.did=mb_dept.did and mb_emp.eid=#&#123;eid&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getOneEmyAndDept</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">EmpMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(EmpMapper.class);<br>    System.out.println(mapper.getOneEmyAndDept(<span class="hljs-number">1</span>));<br>    sqlSession.close();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="第二种方法"><a href="#第二种方法" class="headerlink" title="第二种方法"></a>第二种方法</h2><p>使用级联赋值<code>association</code>的方式进行解决。修改<code>resultMap</code>即可。但要注意这种方式得写出所有的 属性-&gt;字段 映射</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;oneEmpAndDeptMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Emp&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;eid&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;eid&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;empName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;emp_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;age&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;age&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;sex&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sex&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;email&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;email&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;did&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;did&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">association</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;dept&quot;</span> <span class="hljs-attr">javaType</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Dept&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;did&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;did&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;deptName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;dept_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">association</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="第三种方法"><a href="#第三种方法" class="headerlink" title="第三种方法"></a>第三种方法</h2><p>分步查询</p>
+<h3 id="编写mapper接口方法-1"><a href="#编写mapper接口方法-1" class="headerlink" title="编写mapper接口方法"></a>编写mapper接口方法</h3><h4 id="EmpMapper"><a href="#EmpMapper" class="headerlink" title="EmpMapper"></a>EmpMapper</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//分步查询第一步,查询员工信息</span><br>Emp <span class="hljs-title function_">getOneEmyAndDeptByStepOne</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;eid&quot;)</span> Integer id)</span>;<br></code></pre></td></tr></table></figure>
+
+<h4 id="DeptMapper"><a href="#DeptMapper" class="headerlink" title="DeptMapper"></a>DeptMapper</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//分布查询第二步，查询部门信息</span><br>Dept <span class="hljs-title function_">getOneEmyAndDeptByStepTwo</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;did&quot;)</span> Integer id)</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="编写mapper映射-1"><a href="#编写mapper映射-1" class="headerlink" title="编写mapper映射"></a>编写mapper映射</h3><blockquote>
+<p>select：设置分布查询的sql的唯一标识（命名空间.SQLId）<br>column：设置分步查询的条件</p>
+</blockquote>
+<h4 id="EmpMapper-1"><a href="#EmpMapper-1" class="headerlink" title="EmpMapper"></a>EmpMapper</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--查员工信息--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;empAndDeptByStepResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Emp&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;empName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;emp_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;did&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;did&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">association</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;dept&quot;</span></span><br><span class="hljs-tag">                 <span class="hljs-attr">select</span>=<span class="hljs-string">&quot;com.c4n.demo.mapper.DeptMapper.getOneEmyAndDeptByStepTwo&quot;</span></span><br><span class="hljs-tag">                 <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;did&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">association</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getOneEmyAndDeptByStepOne&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;empAndDeptByStepResultMap&quot;</span>&gt;</span><br>    select * from mb_emp where eid = #&#123;eid&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="DeptMapper-1"><a href="#DeptMapper-1" class="headerlink" title="DeptMapper"></a>DeptMapper</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--查询部门信息--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;EmpAndDeptByStepTwoResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Dept&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;deptName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;dept_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getOneEmyAndDeptByStepTwo&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;EmpAndDeptByStepTwoResultMap&quot;</span>&gt;</span><br>    select * from mb_dept where did = #&#123;did&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getOneEmyAndDeptByStep</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">EmpMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(EmpMapper.class);<br>    System.out.println(mapper.getOneEmyAndDeptByStepOne(<span class="hljs-number">1</span>));<br>    sqlSession.close();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="延迟加载"><a href="#延迟加载" class="headerlink" title="延迟加载"></a>延迟加载</h1><p>使用分步查询的优点就是可以实现延迟加载。我们考虑这样一个场景，我们在一些情况下只需要获取员工信息，一些情况下则需要获取员工所在部门信息，如果我们不使用懒加载的话，那么这两种情况我们都得执行两个查询语句，而实际上我们只需要获取员工信息时并不需要进行第二步查询。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getOneEmyAndDeptByStep</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">EmpMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(EmpMapper.class);<br>    <span class="hljs-type">Emp</span> <span class="hljs-variable">emp</span> <span class="hljs-operator">=</span> mapper.getOneEmyAndDeptByStepOne(<span class="hljs-number">1</span>);<br>    System.out.println(emp.getSex());<br>    System.out.println(<span class="hljs-string">&quot;++++++++++++++++++++++++++++++++++++&quot;</span>);<br>    System.out.println(emp.getDept());<br>    sqlSession.close();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="设置全局懒加载"><a href="#设置全局懒加载" class="headerlink" title="设置全局懒加载"></a>设置全局懒加载</h2><p>在核心配置文件中开启懒加载</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">settings</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--开启延迟加载--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">setting</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;lazyLoadingEnabled&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">settings</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>动手试试开启懒加载前后的区别</p>
+<h2 id="设置局部懒加载"><a href="#设置局部懒加载" class="headerlink" title="设置局部懒加载"></a>设置局部懒加载</h2><p>在<code>&lt;associaton&gt;</code>标签中，有一个属性叫做<code>fetchType</code>，这个属性有两个值，一个是<code>lazy    </code>，一个是<code>eager</code>，分别代表开不开启懒加载。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">association</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;dept&quot;</span></span><br><span class="hljs-tag">             <span class="hljs-attr">select</span>=<span class="hljs-string">&quot;com.c4n.demo.mapper.DeptMapper.getOneEmyAndDeptByStepTwo&quot;</span></span><br><span class="hljs-tag">             <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;did&quot;</span></span><br><span class="hljs-tag">             <span class="hljs-attr">fetchType</span>=<span class="hljs-string">&quot;eager&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">association</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="一对多映射"><a href="#一对多映射" class="headerlink" title="一对多映射"></a>一对多映射</h1><p>考虑这样一个场景，Dept实体类中有个Emp集合，代表该部门的员工信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Dept</span><br>&#123;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> did;<br>  <span class="hljs-keyword">private</span> String deptName;<br>  <span class="hljs-keyword">private</span> List&lt;Emp&gt; emps;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="第一种方法-1"><a href="#第一种方法-1" class="headerlink" title="第一种方法"></a>第一种方法</h2><p>我们要往这个集合中注入数据，可以这样编写mapper映射。与前面不同的地方主要在于<code>&lt;collection&gt;</code>标签，其中，<code>ofType</code>属性代表集合内的数据类型。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--一对多--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;DeptAndEmpResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Dept&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;did&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;did&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;deptName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;dept_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">collection</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;emps&quot;</span> <span class="hljs-attr">ofType</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Emp&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;eid&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;eid&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;empName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;emp_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;age&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;age&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;sex&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sex&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;email&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;email&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;did&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;did&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">collection</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getOneDeptAndEmp&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;DeptAndEmpResultMap&quot;</span>&gt;</span><br>    select * from mb_dept,mb_emp where mb_dept.did=mb_emp.did and mb_dept.did=#&#123;did&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="第二种方法-1"><a href="#第二种方法-1" class="headerlink" title="第二种方法"></a>第二种方法</h2><p>分步查询。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Dept <span class="hljs-title function_">getOneDeptAndEmpStepOne</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;did&quot;)</span> Integer id)</span>;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--stepOne--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;DeptAndEmpResultMapStepTOne&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.c4n.demo.pojo.Dept&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;did&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;did&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;deptName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;dept_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">collection</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;emps&quot;</span></span><br><span class="hljs-tag">                <span class="hljs-attr">select</span>=<span class="hljs-string">&quot;com.c4n.demo.mapper.EmpMapper.getEmpByDid&quot;</span></span><br><span class="hljs-tag">                <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;did&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">collection</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getOneDeptAndEmpStepOne&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;DeptAndEmpResultMapStepTOne&quot;</span>&gt;</span><br>    select * from mb_dept where did = #&#123;did&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--根据did查询员工信息--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getEmpByDid&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;empMap&quot;</span>&gt;</span><br>    select * from mb_emp where did = #&#123;did&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Mybatis/" class="category-chain-item">Mybatis</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Mybatis/">#Mybatis</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>6.映射</div>
+      <div>https://singlerun.github.io/2023/01/03/Mybatis/6.映射/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>C4n</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 3, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/02/Mybatis/5.%E7%89%B9%E6%AE%8ASQL%E7%9A%84%E6%89%A7%E8%A1%8C/" title="5.特殊SQL的执行">
+                        <span class="hidden-mobile">5.特殊SQL的执行</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      // Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"qaJ5jKKg99VJe9tLAVIteTqh-gzGzoHsz","appKey":"vrEKj061WGUadB3PLc8WywPN","path":"window.location.pathname","placeholder":"留下一条评论再走吧~","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"master":"0db2f501c153ec179df0cb7ce250235d","friends":"d370509e63b7a8585521086eae6aa46c,0173939xxxxx32a8cffc288b046dc"},
+          {
+            el: "#valine",
+            path: window.location.pathname,
+            master: "0db2f501c153ec179df0cb7ce250235d",
+            friends: "d370509e63b7a8585521086eae6aa46c,0173939xxxxx32a8cffc288b046dc",
+            tagMeta: ["博主","友人","访客"],
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        🚀 访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/gh/bynotes/texiao/source/js/caidai.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
