@@ -16,22 +16,22 @@
   <meta name="author" content="C4n">
   <meta name="keywords" content="">
   
-    <meta name="description" content="介绍一级缓存和二级缓存的使用。">
+    <meta name="description" content="介绍分页插件罢了。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="8.缓存">
-<meta property="og:url" content="https://singlerun.github.io/2023/01/04/Mybatis/8.%E7%BC%93%E5%AD%98/index.html">
+<meta property="og:title" content="10.分页插件">
+<meta property="og:url" content="https://singlerun.github.io/2023/01/05/Mybatis/10.%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6/index.html">
 <meta property="og:site_name" content="C4n&#39;s Blog">
-<meta property="og:description" content="介绍一级缓存和二级缓存的使用。">
+<meta property="og:description" content="介绍分页插件罢了。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-01-04T15:30:06.000Z">
-<meta property="article:modified_time" content="2023-01-04T15:49:33.479Z">
+<meta property="article:published_time" content="2023-01-05T09:01:08.000Z">
+<meta property="article:modified_time" content="2023-01-05T09:13:58.437Z">
 <meta property="article:author" content="C4n">
 <meta property="article:tag" content="Mybatis">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>8.缓存 - C4n&#39;s Blog</title>
+  <title>10.分页插件 - C4n&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -232,7 +232,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="8.缓存"></span>
+            <span id="subtitle" data-typed-text="10.分页插件"></span>
           
         </div>
 
@@ -243,8 +243,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-01-04 23:30" pubdate>
-          January 4, 2023 pm
+        <time datetime="2023-01-05 17:01" pubdate>
+          January 5, 2023 pm
         </time>
       </span>
     
@@ -255,7 +255,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k words
+          1.9k words
         
       </span>
     
@@ -266,7 +266,7 @@
         
         
         
-          20 mins
+          16 mins
         
       </span>
     
@@ -312,43 +312,39 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">8.缓存</h1>
+            <h1 style="display: none">10.分页插件</h1>
             
             
               <div class="markdown-body">
                 
-                <p>缓存：Mybatis为经常需要执行的sql语句提供的速度优化策略。若一二级缓存都开启，那么当我们执行sql语句时，会优先查找二级缓存，没有则查找一级缓存，没有则查找数据库。</p>
-<h1 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h1><p>一级缓存是SqlSession级别的，通过同一个SqlSession查询的数据会被缓存，下次查询相同的数据，就会从缓存中直接获取，不会从数据库重新访问 </p>
-<h2 id="编写Mapper接口方法"><a href="#编写Mapper接口方法" class="headerlink" title="编写Mapper接口方法"></a>编写Mapper接口方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//通过eid查询Emp</span><br>Emp <span class="hljs-title function_">getEmpById</span><span class="hljs-params">(Integer eid)</span>;<br></code></pre></td></tr></table></figure>
+                <h1 id="引入炸药包"><a href="#引入炸药包" class="headerlink" title="引入炸药包"></a>引入炸药包</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.github.pagehelper<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>pagehelper<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.2.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
-<h2 id="编写Mapper映射"><a href="#编写Mapper映射" class="headerlink" title="编写Mapper映射"></a>编写Mapper映射</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getEmpByIdResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;emp&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;empName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;emp_name&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getEmpById&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;getEmpByIdResultMap&quot;</span>&gt;</span><br>    select * from mb_emp where eid=#&#123;eid&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h1 id="配置分页插件"><a href="#配置分页插件" class="headerlink" title="配置分页插件"></a>配置分页插件</h1><p>在MyBatis的核心配置文件（mybatis-config.xml）中配置插件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--设置分页插件--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span> <span class="hljs-attr">interceptor</span>=<span class="hljs-string">&quot;com.github.pagehelper.PageInterceptor&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>从运行结果来看，只要是相同的sql语句执行多次，那么除去第一次外，并不会重新执行sql语句，而只是从缓存中取出查询结果。</p>
-<p>这就是Mybatis的一级缓存，它是默认开启的，且只与Sqlsession有关，即使你从同一个sqlsession中再取出一个mapper，执行相同的sql语句，那仍然还是会从缓存中取出查询结果，而如果是用了不同的Sqlsession，那么Mybatis是没办法从缓存中取出查询结果的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testGetEmpById</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">CacheMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(CacheMapper.class);<br>    System.out.println(mapper.getEmpById(<span class="hljs-number">1</span>));<br>    System.out.println(mapper.getEmpById(<span class="hljs-number">2</span>));<br>    System.out.println(mapper.getEmpById(<span class="hljs-number">1</span>));<br>    sqlSession.close();<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="启动分页功能"><a href="#启动分页功能" class="headerlink" title="启动分页功能"></a>启动分页功能</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testPageHelper</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">EmpMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(EmpMapper.class);<br>    <span class="hljs-comment">//查询全部</span><br>    System.out.println(<span class="hljs-string">&quot;查询全部Emp&quot;</span>);<br>    <span class="hljs-comment">//下面这一行就是开启分页功能的，只需要在查询前开启即可</span><br>    PageHelper.startPage(<span class="hljs-number">1</span>,<span class="hljs-number">4</span>);<br>    mapper.selectByExample(<span class="hljs-literal">null</span>).forEach(System.out::println);<br>    sqlSession.close();<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="一级缓存失效的四种情况"><a href="#一级缓存失效的四种情况" class="headerlink" title="一级缓存失效的四种情况"></a>一级缓存失效的四种情况</h2><ol>
-<li>不同的SqlSession对应不同的一级缓存 </li>
-<li> 同一个SqlSession但是查询条件不同</li>
-<li> 同一个SqlSession两次查询期间执行了任何一次增删改操作</li>
-<li> 同一个SqlSession两次查询期间手动清空了缓存（sqlSession.clearCache()）</li>
-</ol>
-<h1 id="二级缓存"><a href="#二级缓存" class="headerlink" title="二级缓存"></a>二级缓存</h1><p>二级缓存是SqlSessionFactory级别，通过同一个SqlSessionFactory创建的SqlSession查询的结果会被缓存；此后若再次执行相同的查询语句，结果就会从缓存中获取 。</p>
-<p>二级缓存开启的条件</p>
-<ol>
-<li>在核心配置文件中，设置全局配置属性<code>cacheEnabled=&quot;true&quot;</code>，默认为true，不需要设置</li>
-<li>在映射文件中加上一行<code>&lt;cache /&gt;</code></li>
-<li> 二级缓存必须在SqlSession关闭或提交之后有效</li>
-<li>查询的数据所转换的实体类类型必须实现序列化的接口（Serializable）</li>
-</ol>
-<h2 id="编写Mapper接口方法-1"><a href="#编写Mapper接口方法-1" class="headerlink" title="编写Mapper接口方法"></a>编写Mapper接口方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//二级缓存</span><br>Emp <span class="hljs-title function_">getEmpByIdButTwoCache</span><span class="hljs-params">(Integer eid)</span>;<br></code></pre></td></tr></table></figure>
+<h1 id="简要信息"><a href="#简要信息" class="headerlink" title="简要信息"></a>简要信息</h1><p>也就是直接接收<code>PageHelper.startPage()</code>的返回值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testPageHelper</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">EmpMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(EmpMapper.class);<br>    <span class="hljs-comment">//查询全部</span><br>    System.out.println(<span class="hljs-string">&quot;查询全部Emp&quot;</span>);<br>    Page&lt;Object&gt; page = PageHelper.startPage(<span class="hljs-number">1</span>, <span class="hljs-number">4</span>);<br>    List&lt;Emp&gt; list=mapper.selectByExample(<span class="hljs-literal">null</span>);<br>    System.out.println(page);<br>    sqlSession.close();<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="编写Mapper映射-1"><a href="#编写Mapper映射-1" class="headerlink" title="编写Mapper映射"></a>编写Mapper映射</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs XML"><span class="hljs-tag">&lt;<span class="hljs-name">cache</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;getEmpByIdButTwoCache&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;getEmpByIdResultMap&quot;</span>&gt;</span><br>    select * from mb_emp where eid=#&#123;eid&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h1 id="详细信息"><a href="#详细信息" class="headerlink" title="详细信息"></a>详细信息</h1><p>PageInfo的构造函数有两个参数,第一个是分页后的数据,第二个是导航页显示的页数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testPageHelper</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> SqlSessionUtils.getSqlSession();<br>    <span class="hljs-type">EmpMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(EmpMapper.class);<br>    <span class="hljs-comment">//查询全部</span><br>    System.out.println(<span class="hljs-string">&quot;查询全部Emp&quot;</span>);<br>    PageHelper.startPage(<span class="hljs-number">1</span>,<span class="hljs-number">4</span>);<br>    List&lt;Emp&gt; list=mapper.selectByExample(<span class="hljs-literal">null</span>);<br>    PageInfo&lt;Emp&gt; empPageInfo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PageInfo</span>&lt;&gt;(list, <span class="hljs-number">5</span>);<br>    System.out.println(empPageInfo);<br>    sqlSession.close();<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="实现序列化接口"><a href="#实现序列化接口" class="headerlink" title="实现序列化接口"></a>实现序列化接口</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Emp</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span>&#123;&#125;<br></code></pre></td></tr></table></figure>
+<p>empPageInfo内的常用数据： </p>
+<ul>
+<li>pageNum：当前页的页码  </li>
+<li>pageSize：每页显示的条数  </li>
+<li>size：当前页显示的真实条数  </li>
+<li>total：总记录数  </li>
+<li>pages：总页数  </li>
+<li>prePage：上一页的页码  </li>
+<li>nextPage：下一页的页码 </li>
+<li>isFirstPage/isLastPage：是否为第一页/最后一页  </li>
+<li>hasPreviousPage/hasNextPage：是否存在上一页/下一页  </li>
+<li>navigatePages：导航分页的页码数  </li>
+<li>navigatepageNums：导航分页的页码，[1,2,3,4,5]</li>
+</ul>
 
-<h2 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h2><p>只有当sqlSession1关闭后，他才会将查询结果存放到二级缓存中，此时sqlSession2才能从二级缓存中取到查询结果。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testGetEmpByIdButTwoCache</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException<br>&#123;<br>    <span class="hljs-type">SqlSessionFactory</span> <span class="hljs-variable">build</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SqlSessionFactoryBuilder</span>().build(Resources.getResourceAsStream(<span class="hljs-string">&quot;mybatis-config.xml&quot;</span>));<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession1</span> <span class="hljs-operator">=</span> build.openSession();<br>    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession2</span> <span class="hljs-operator">=</span> build.openSession();<br>    System.out.println(sqlSession1.getMapper(CacheMapper.class).getEmpByIdButTwoCache(<span class="hljs-number">1</span>));<br>    sqlSession1.close();<br>    System.out.println(sqlSession2.getMapper(CacheMapper.class).getEmpByIdButTwoCache(<span class="hljs-number">1</span>));<br>    sqlSession2.close();<br>&#125;<br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -393,8 +389,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>8.缓存</div>
-      <div>https://singlerun.github.io/2023/01/04/Mybatis/8.缓存/</div>
+      <div>10.分页插件</div>
+      <div>https://singlerun.github.io/2023/01/05/Mybatis/10.分页插件/</div>
     </div>
     <div class="license-meta">
       
@@ -406,7 +402,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>January 4, 2023</div>
+          <div>January 5, 2023</div>
         </div>
       
       
@@ -438,18 +434,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/01/05/Mybatis/9.%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" title="9.逆向工程">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">9.逆向工程</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/01/04/Mybatis/7.%E5%8A%A8%E6%80%81SQL/" title="7.动态SQL">
-                        <span class="hidden-mobile">7.动态SQL</span>
+                      <a href="/2023/01/05/Mybatis/9.%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" title="9.逆向工程">
+                        <span class="hidden-mobile">9.逆向工程</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
